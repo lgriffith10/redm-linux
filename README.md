@@ -8,6 +8,8 @@ Ce n'est pas un lanceur. L'outil diagnostique l'environnement, inventorie les
 runtimes, analyse les journaux, et produit des **preuves reproductibles**
 (JSON versionné, attribué à un hôte).
 
+Le brief d'origine du projet est conservé dans [`docs/brief.md`](docs/brief.md).
+
 > **Statut : phase 0 (fondations).** Aucune compatibilité RedM n'est revendiquée
 > à ce stade. Voir [`docs/roadmap.md`](docs/roadmap.md).
 
