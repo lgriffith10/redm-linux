@@ -1,0 +1,5 @@
+0024:err:module:import_dll Library MSVCP140.dll (which is needed by L"C:\\Program Files\\Example\\app.exe") not found
+0024:err:module:import_dll Library MSVCP140.dll (which is needed by L"C:\\Program Files\\Example\\lib.dll") not found
+0024:err:module:loader_init Importing dlls for L"C:\\Program Files\\Example\\app.exe" failed, status c0000135
+0030:fixme:kernelbase:AppPolicyGetProcessTerminationMethod stub
+0030:err:winediag:ntlm_check_version ntlm_auth was not found. Make sure that ntlm_auth >= 3.0.25 is in your path.

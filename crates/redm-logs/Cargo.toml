@@ -1,0 +1,15 @@
+[package]
+name = "redm-logs"
+description = "Analyse à base de règles des journaux Wine/Proton/DXVK/CitizenFX."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+redm-core.workspace = true
+regex.workspace = true
+serde.workspace = true
+
+[lints]
+workspace = true

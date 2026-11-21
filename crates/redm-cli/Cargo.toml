@@ -1,0 +1,27 @@
+[package]
+name = "redm-cli"
+description = "CLI `redm-linux` : diagnostic d'environnement, runtimes et journaux."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "redm-linux"
+path = "src/main.rs"
+
+[dependencies]
+redm-core.workspace = true
+redm-env.workspace = true
+redm-runtime.workspace = true
+redm-logs.workspace = true
+anyhow.workspace = true
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
+
+[lints]
+workspace = true

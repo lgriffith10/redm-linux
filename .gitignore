@@ -1,0 +1,3 @@
+/target
+*.log
+!crates/**/tests/fixtures/*.log
