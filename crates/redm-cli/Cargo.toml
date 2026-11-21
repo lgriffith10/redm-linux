@@ -15,6 +15,7 @@ redm-core.workspace = true
 redm-env.workspace = true
 redm-runtime.workspace = true
 redm-logs.workspace = true
+redm-game.workspace = true
 anyhow.workspace = true
 clap.workspace = true
 serde.workspace = true

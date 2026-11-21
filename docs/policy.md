@@ -40,7 +40,17 @@ Chaque `Finding` porte une `Resolution` :
   pas représentatif.
 - Les journaux de test versionnés dans le dépôt sont soit **synthétiques**
   (et nommés `synthetic-*`), soit des captures réelles accompagnées de leur
-  `EvidenceRecord` d'environnement.
+  `EvidenceRecord` d'environnement, soit des **extraits anonymisés de journaux
+  publics**, dont la source est citée dans [`references.md`](references.md).
+
+## Données personnelles
+
+Les journaux CitizenFX contiennent l'adresse e-mail du compte Rockstar, et les
+chemins contiennent les noms d'utilisateur. La sortie `--json` est donc
+anonymisée par défaut (`redm_core::redact_with`) : adresses e-mail,
+`C:\Users\<nom>`, `drive_c/users/<nom>`, `/home/<nom>` et toute occurrence de
+`$USER`. Ne jamais publier une sortie produite avec `--no-redact`, ni un journal
+brut : passer par `redm-linux --json analyze-log`.
 
 ## Patches
 

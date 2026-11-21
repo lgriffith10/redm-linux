@@ -232,6 +232,7 @@ dependencies = [
  "clap",
  "redm-core",
  "redm-env",
+ "redm-game",
  "redm-logs",
  "redm-runtime",
  "serde",
@@ -242,6 +243,7 @@ dependencies = [
 name = "redm-core"
 version = "0.1.0"
 dependencies = [
+ "regex",
  "serde",
  "serde_json",
 ]
@@ -255,12 +257,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "redm-game"
+version = "0.1.0"
+dependencies = [
+ "redm-core",
+ "redm-runtime",
+ "serde",
+ "tempfile",
+]
+
+[[package]]
 name = "redm-logs"
 version = "0.1.0"
 dependencies = [
  "redm-core",
  "regex",
  "serde",
+ "serde_json",
 ]
 
 [[package]]

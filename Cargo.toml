@@ -5,6 +5,7 @@ members = [
     "crates/redm-env",
     "crates/redm-runtime",
     "crates/redm-logs",
+    "crates/redm-game",
     "crates/redm-cli",
 ]
 
@@ -20,6 +21,7 @@ redm-core = { path = "crates/redm-core" }
 redm-env = { path = "crates/redm-env" }
 redm-runtime = { path = "crates/redm-runtime" }
 redm-logs = { path = "crates/redm-logs" }
+redm-game = { path = "crates/redm-game" }
 
 anyhow = "1"
 clap = { version = "4.6", features = ["derive"] }

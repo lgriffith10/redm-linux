@@ -1,0 +1,18 @@
+[package]
+name = "redm-game"
+description = "Localisation en lecture seule du Rockstar Launcher, de RDR2 et de RedM dans un préfixe Wine."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+redm-core.workspace = true
+redm-runtime.workspace = true
+serde.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+
+[lints]
+workspace = true

@@ -58,7 +58,7 @@ fn analyze_log_from_stdin_blocker_exit_code() {
         .stdin
         .take()
         .unwrap()
-        .write_all(b"Adhesive: initialization message\n")
+        .write_all(b"Adhesive: initialization failed\n")
         .unwrap();
     let out = child.wait_with_output().unwrap();
     assert_eq!(out.status.code(), Some(3));
@@ -80,4 +80,31 @@ fn env_json_reports_host() {
     let v: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
     assert_eq!(v["kind"], "environment");
     assert_eq!(v["host"], v["payload"]["host"]);
+}
+
+/// Chaque sous-commande doit produire un JSON valide (régression : `runtimes`
+/// et `scan` échouaient sur `#[serde(flatten)]` d'une liste).
+#[test]
+fn every_command_emits_valid_json() {
+    let tmp = std::env::temp_dir();
+    let tmp = tmp.to_str().unwrap();
+    for args in [
+        vec!["env"],
+        vec!["runtimes"],
+        vec!["prefix", tmp],
+        vec!["scan"],
+        vec!["doctor"],
+        vec!["analyze-log", FIXTURE],
+    ] {
+        let out = bin().arg("--json").args(&args).output().unwrap();
+        assert_ne!(
+            out.status.code(),
+            Some(1),
+            "{args:?}: {}",
+            String::from_utf8_lossy(&out.stderr)
+        );
+        let v: serde_json::Value = serde_json::from_slice(&out.stdout)
+            .unwrap_or_else(|e| panic!("{args:?}: JSON invalide : {e}"));
+        assert!(v["payload"]["findings"].is_array(), "{args:?}");
+    }
 }

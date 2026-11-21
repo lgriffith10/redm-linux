@@ -4,6 +4,11 @@
 //! (plus DXVK, VKD3D-Proton et des scripts), et les deux partagent la notion
 //! de préfixe. Ce crate ne lance encore rien ; il découvre et inspecte.
 
+pub mod dll;
+pub mod graphics;
+pub mod registry;
+pub mod winpath;
+
 use redm_core::{Finding, Resolution, Severity};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
@@ -18,6 +23,8 @@ pub struct ProtonInstall {
     pub path: PathBuf,
     /// Contenu du fichier `version` (ex. `proton-9.0-4`), si présent.
     pub version: Option<String>,
+    /// DXVK et VKD3D-Proton embarqués.
+    pub bundled: graphics::BundledTranslators,
 }
 
 /// Racines de recherche Proton habituelles pour un `$HOME` donné.
@@ -70,6 +77,7 @@ pub fn discover_proton(roots: &[PathBuf]) -> Vec<ProtonInstall> {
                 .and_then(|t| parse_proton_version_file(&t));
             found.push(ProtonInstall {
                 name: entry.file_name().to_string_lossy().into_owned(),
+                bundled: graphics::inspect_proton_bundle(&path),
                 path,
                 version,
             });
@@ -121,6 +129,38 @@ pub fn inspect_prefix(path: &Path) -> PrefixReport {
         initialized: system_reg.is_some() && pfx.join("drive_c").is_dir(),
         arch,
     }
+}
+
+/// Emplacements de préfixes usuels pour un `$HOME` donné : `~/.wine`,
+/// préfixes nommés, Lutris (`~/Games/*`), Steam `compatdata/*` (dont les
+/// raccourcis « jeu non-Steam »), Steam Flatpak.
+pub fn default_prefix_candidates(home: &Path) -> Vec<PathBuf> {
+    let mut v = vec![home.join(".wine")];
+    for parent in [
+        home.join(".local/share/wineprefixes"),
+        home.join("Games"),
+        home.join(".steam/steam/steamapps/compatdata"),
+        home.join(".local/share/Steam/steamapps/compatdata"),
+        home.join(".var/app/com.valvesoftware.Steam/data/Steam/steamapps/compatdata"),
+    ] {
+        if let Ok(entries) = fs::read_dir(&parent) {
+            v.extend(entries.flatten().map(|e| e.path()));
+        }
+    }
+    v
+}
+
+/// Garde les candidats qui sont des préfixes initialisés, sans doublons.
+pub fn discover_prefixes(candidates: &[PathBuf]) -> Vec<PrefixReport> {
+    let mut seen = BTreeSet::new();
+    let mut out: Vec<PrefixReport> = candidates
+        .iter()
+        .map(|c| inspect_prefix(c))
+        .filter(|r| r.initialized)
+        .filter(|r| seen.insert(fs::canonicalize(&r.path).unwrap_or_else(|_| r.path.clone())))
+        .collect();
+    out.sort_by(|a, b| a.path.cmp(&b.path));
+    out
 }
 
 /// Constats sur les runtimes disponibles.
@@ -250,6 +290,28 @@ mod tests {
         assert_eq!(r.arch, Some(PrefixArch::Win64));
         assert!(r.path.ends_with("pfx"));
         assert!(assess_prefix(&r).is_empty());
+    }
+
+    #[test]
+    fn discovers_only_initialized_prefixes() {
+        let tmp = tempfile::tempdir().unwrap();
+        let home = tmp.path();
+        let mk = |p: &std::path::Path| {
+            create_dir_all(p.join("drive_c")).unwrap();
+            write(
+                p.join("system.reg"),
+                "WINE REGISTRY Version 2\n#arch=win64\n",
+            )
+            .unwrap();
+        };
+        mk(&home.join(".wine"));
+        mk(&home.join("Games/rockstar-games-launcher"));
+        mk(&home.join(".local/share/Steam/steamapps/compatdata/3141592653/pfx"));
+        create_dir_all(home.join("Games/not-a-prefix")).unwrap();
+        let found = discover_prefixes(&default_prefix_candidates(home));
+        assert_eq!(found.len(), 3);
+        assert!(found.iter().all(|p| p.initialized));
+        assert!(found.iter().any(|p| p.path.ends_with("3141592653/pfx")));
     }
 
     #[test]

@@ -47,3 +47,20 @@ produisent toutes des `redm_core::Finding`. Il n'y a donc pas de crate
   crates dont les API ont divergé est coûteux.
 - Toute la collecte système passe par le trait `redm_env::SystemSource`, ce qui
   rend les règles testables sans l'hôte réel.
+
+## Addendum (2026-11-21) — crate `redm-game`
+
+Un sixième crate, `redm-game`, a été créé pour localiser le Rockstar Games
+Launcher, RDR2 et RedM dans un préfixe. Ce n'est pas un module de
+`redm-runtime` pour deux raisons :
+
+- **Responsabilité distincte** : `redm-runtime` décrit Wine/Proton (logiciels
+  libres, formats stables) ; `redm-game` encode l'organisation de fichiers de
+  logiciels propriétaires, qui change avec leurs mises à jour et dont chaque
+  élément porte un niveau de preuve (`docs/references.md`).
+- **Sens des dépendances** : `redm-game` dépend de `redm-runtime` (registre,
+  chemins Windows, pile graphique), jamais l'inverse.
+
+`redm-runtime` gagne les modules `registry` (lecture des `.reg` de Wine),
+`winpath` (chemins Windows → hôte, insensibles à la casse), `dll`
+(identification Wine/DXVK/VKD3D-Proton) et `graphics`.

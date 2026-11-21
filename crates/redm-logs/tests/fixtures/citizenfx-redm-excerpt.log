@@ -1,0 +1,12 @@
+[      1250] [b1491_DumpServ]                 2308/ DumpServer is active and waiting.
+[      1250] [          RedM]             MainThrd/ --- BEGIN LOGGING AT Sun Apr  7 04:36:27 2024 ---
+[    210329] [          RedM]             MainThrd/ hello from "C:\Users\Jane Doe\AppData\Local\RedM\RedM.exe" 
+[    215829] [   ROSLauncher]             MainThrd/ hello from "C:\Users\Jane Doe\AppData\Local\RedM\RedM.app\data\cache\subprocess\RedM_ROSLauncher" ros:steam --parent_pid=4088 "C:\program files\rockstar games\launcher\launcher.exe" -noRecogniser
+[    221000] [          RedM]             MainThrd/ External ROS says it's signed in: jane.doe@example.com
+[    227922] [   ROSLauncher]                12720/ SC JS message: SetTitleInfo (rdr2) -> {"currentVersion":"","friendlyName":"Red Dead Redemption 2","status":{"entitlement":true,"install":true,"installLocation":"C:\\Program Files\\Rockstar Games\\Games\\Red Dead Redemption 2"},"titleName":"rdr2"}
+[    228719] [   ROSLauncher]                12720/ SC JS message: SetTitleInfo (rdr2) -> {"currentVersion":"1.0.1491.18","friendlyName":"Red Dead Redemption 2","status":{"entitlement":true,"install":true,"installLocation":"C:\\Program Files\\Rockstar Games\\Games\\Red Dead Redemption 2"},"titleName":"rdr2"}
+[    273516] [b1491_GTAProce]             MainThrd/ pre-gameload component citizen:playernames:rdr3
+[    273516] [b1491_GTAProce]             MainThrd/ pre-gameload component adhesive
+[    273516] [b1491_GTAProce]             MainThrd/ pre-gameload component discord
+[    286516] [b1491_DumpServ]                 8076/ Process crash captured. Crash dialog content:
+[    286516] [b1491_DumpServ]                 8076/ d3d11.dll!?EnsureChildDevice@CDevice@NDXGI@@QEAAJPEAUID3D11Device@@@Z (+0x1234)

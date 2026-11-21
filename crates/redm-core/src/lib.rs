@@ -3,6 +3,9 @@
 //! Ce crate ne fait aucune E/S : il définit le vocabulaire commun
 //! (type d'hôte, constats, classification de résolution, enveloppe de preuve).
 
+mod privacy;
+pub use privacy::{redact, redact_with};
+
 use serde::{Deserialize, Serialize};
 use std::fmt;
 use std::time::{SystemTime, UNIX_EPOCH};
